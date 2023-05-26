@@ -8,6 +8,8 @@ import { Toast } from 'primereact/toast';
 import { useReducer, useRef } from 'react';
 import { isMatch } from './utils';
 import { userReducer, wordsReducer } from './state/reducers';
+import Word from './components/Word';
+import WordList from './components/WordList';
 
 const initialWords: any = {
   1: {
@@ -65,37 +67,51 @@ const initialUser = {
   points: 0,
 };
 
-export default function Home() {
+function useWords() {
   const [words, wordsDispatch] = useReducer(wordsReducer, initialWords);
+  const changeWordInput = (payload: any) => {
+    wordsDispatch({ type: 'onChangeInput', payload });
+  }
+  return {
+    words,
+    changeWordInput,
+  }
+}
+
+function useUser() {
   const [user, userDispatch] = useReducer(userReducer, initialUser);
+  const addPoints = (points: number) => {
+    userDispatch({ type: 'addPoints', payload: points });
+  }
+  return {
+    user,
+    addPoints,
+  }
+}
+
+export default function Home() {
   const toast = useRef<Toast | null>(null);
+  const { words, changeWordInput } = useWords();
+  const { user, addPoints } = useUser();
 
   const onChangeInput = ({ target: payload }: any) => {
-    wordsDispatch({ type: 'onChangeInput', payload });
+    changeWordInput(payload);
   };
 
-  const handleClick = (id: number, word: string) => {
+  const handleClick = (id: string, word: string) => {
     if (!id || !initialWords[id]) return;
     const value = words[id][word];
 
     if (isMatch(initialWords[id], value)) {
       const { points } = initialWords[id];
       toast?.current?.show({ summary: `wordcel +${points}` });
-      userDispatch({ type: "addPoints", payload: points })
+      addPoints(points);
     }
   };
   return (
     <main className={styles.main}>
       <Toast ref={toast} />
-      {Object.entries(initialWords).map(([_id, item]: any) => {
-        return (
-          <div key={_id}>
-            <div>{item.word}</div>
-            <InputText id={_id} name={item.word} onChange={onChangeInput} />
-            <Button label="w" onClick={() => handleClick(_id, item.word)} />
-          </div>
-        );
-      })}
+      <WordList words={initialWords} onChange={onChangeInput} onClick={handleClick} />
     </main>
   );
 }
