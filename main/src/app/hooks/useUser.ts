@@ -1,21 +1,25 @@
-import { useReducer } from "react";
-import { userReducer } from "../state/reducers";
-import { useToast } from "../context/toastNotifications";
-const initialUser = {
-  name: '',
-  points: 0,
-};
+import { useUserContext } from '../context/userContext';
+import { userActions } from '../state/user/actions';
+import { useToast } from './useToast';
 
 export function useUser() {
-  const [user, dispatch] = useReducer(userReducer, initialUser);
-  const { showToast } = useToast()
+  const { state, dispatch } = useUserContext();
+  console.log('user: ', state);
 
+  const { showToast } = useToast();
+
+  const changeInputValue = (value: string) => {
+    dispatch(userActions.changeInputValue(value));
+  };
   const addPoints = (points: number) => {
-    dispatch({ type: 'addPoints', payload: points });
+    dispatch(userActions.addPoints(points));
     showToast({ summary: `wordcel +${points}` });
   };
+
   return {
-    user,
+    userState: state,
+    userDispatch: dispatch,
+    changeInputValue,
     addPoints,
   };
 }
