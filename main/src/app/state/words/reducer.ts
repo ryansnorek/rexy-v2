@@ -1,13 +1,14 @@
-export default function reducer(state: any, action: any) {
+import { WordsActions, WordsState } from '@/app/types/words.type';
+
+export default function wordsReducer(state: WordsState, action: WordsActions) {
   switch (action.type) {
-    case "onChangeInput": {
-      const { id, name, value } = action.payload;
+    case 'setWords': {
       return {
         ...state,
-        [id]: {
-          [name]: value 
-        }
+        data: action.payload,
       };
     }
+    default:
+      return state;
   }
-};
+}
