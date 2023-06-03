@@ -1,11 +1,12 @@
-import { Dispatch } from 'react';
 import { wordsActions } from '../state/words/actions';
 
-export interface WordsState {
-  currentWord: WordData;
-  data: {
-    [key: string]: WordData;
-  };
+export type WordsState = {
+  words: {
+    currentWord: WordData;
+    data: {
+      [key: string]: WordData;
+    };
+  }
 }
 
 export enum ACTIONS {
@@ -16,10 +17,8 @@ type Actions = typeof wordsActions;
 
 export type WordsActions = ReturnType<Actions[keyof Actions]>;
 
-export type WordsDispatch = Dispatch<WordsActions>;
-
 export interface WordData {
-  id: number;
+  id: string;
   word: string;
   synonyms: Array<string>;
   points: number;

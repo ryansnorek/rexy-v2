@@ -1,22 +1,26 @@
 import { isNumber, isString } from "@/app/types/guards";
-import { UserActions, UserState } from "@/app/types/user.type";
+import { AppState } from "@/app/types/store.type";
+import { UserActions } from "@/app/types/user.type";
 
-export default function userReducer(state: UserState, action: UserActions): UserState {
-  switch (action.type) {
-    case 'changeInputValue': {
-      if (isNumber(action.payload)) return state;
-      return {
-        ...state,
+export const userReducer = {
+  changeInputValue: (state: AppState, action: UserActions) => {
+    if (isNumber(action.payload)) return state;
+    return {
+      ...state,
+      user: {
+        ...state.user,
         currentInputValue: action.payload,
-      };
-    }
-    case 'addPoints': {
-      if (isString(action.payload)) return state;
-      return {
-        ...state,
-        points: state.points + action.payload,
-      };
-    }
-    default: return state;
-  }
+      },
+    };
+  },
+  addPoints: (state: AppState, action: UserActions) => {
+    if (isString(action.payload)) return state;
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        points: state.user.points + action.payload,
+      },
+    };
+  },
 }

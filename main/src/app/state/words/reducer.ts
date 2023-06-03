@@ -1,14 +1,14 @@
-import { WordsActions, WordsState } from '@/app/types/words.type';
+import { AppState } from "@/app/types/store.type"
+import { WordsActions } from "@/app/types/words.type"
 
-export default function wordsReducer(state: WordsState, action: WordsActions) {
-  switch (action.type) {
-    case 'setWords': {
-      return {
-        ...state,
+export const wordsReducer = {
+  setWords: (state: AppState, action: WordsActions) => {
+    return {
+      ...state,
+      words: {
+        ...state.words,
         data: action.payload,
-      };
+      }
     }
-    default:
-      return state;
   }
 }

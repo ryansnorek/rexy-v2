@@ -1,4 +1,4 @@
-import userReducer from './user/reducer';
-import wordsReducer from './words/reducer';
+import { userReducer } from './user/reducer';
+import { wordsReducer } from './words/reducer';
 
-export { userReducer, wordsReducer };
+export const storeReducer = { ...userReducer, ...wordsReducer };

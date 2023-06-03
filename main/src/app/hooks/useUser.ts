@@ -1,13 +1,16 @@
-import { useUserContext } from '../context/userContext';
+import { useEffect } from 'react';
+import { prisma } from '../db';
 import { userActions } from '../state/user/actions';
 import { useToast } from './useToast';
+import { useStore } from '../state/store';
 
 export function useUser() {
-  const { state, dispatch } = useUserContext();
-  console.log('user: ', state);
+  const { state, dispatch } = useStore();
 
+  console.log('user: ', state.user);
+  
   const { showToast } = useToast();
-
+  
   const changeInputValue = (value: string) => {
     dispatch(userActions.changeInputValue(value));
   };
@@ -15,10 +18,17 @@ export function useUser() {
     dispatch(userActions.addPoints(points));
     showToast({ summary: `wordcel +${points}` });
   };
+  // prisma.user.create({ data: { name: "ryan" }})
+  
+  const getData = () => {
+    //return prisma.user.findMany()
+  }
 
+  // const userData = await getData()
+
+  
   return {
-    userState: state,
-    userDispatch: dispatch,
+    user: state.user,
     changeInputValue,
     addPoints,
   };
