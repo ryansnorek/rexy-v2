@@ -1,3 +1,4 @@
+'use client'
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent } from "react";
@@ -5,17 +6,16 @@ import { ChangeEvent } from "react";
 interface WordProps {
   id: string;
   word: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onClick: (id: string) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Word(props: WordProps) {
-  const { id, word } = props;
+export default function Word({ id, word, onClick, onChange }: WordProps) {  
   return (
     <div className="container">
       <div>{word}</div>
-      <InputText id={id} name={word} onChange={props.onChange} />
-      <Button label="w" onClick={() => props.onClick(id)} />
+      <InputText id={id} name={word} onChange={onChange} />
+      <Button label="w" onClick={() => onClick(id)} />
     </div>
   );
 }
