@@ -3,4 +3,4 @@
 
 **URL: tbd**
 
-React | TypeScript
+Next.js | React | TypeScript
